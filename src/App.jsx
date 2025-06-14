@@ -1,35 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route } from "react-router-dom";
+
+import "antd/dist/reset.css";
+import "./assets/styles/main.css";
+import "./assets/styles/responsive.css";
+import "./assets/styles/adaptive.css";
+
+import LoginPage from "./pages/Login";
+import PrivateRoute from "./components/PrivateRoute";
+import Albums from "./pages/Albums";
+import Blank from "./pages/Blank";
+import CreatePlaylist from "./pages/CreatePlaylist";
+import Explore from "./pages/Explore";
+import Favorite from "./pages/Favorite";
+import Playlists from "./pages/Playlists";
+// import Gallery from "./pages/Gallery";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="App">
+      <Routes>
+        <Route exact path="/" element={<LoginPage />} />
+        <Route exact path="/login" element={<LoginPage />} />
+        {/* <Route exact path="/gallery" element={<Gallery />} /> */}
+        <Route exact path="/albums" element={<PrivateRoute component={<Albums />} />} />
+        <Route exact path="/create-playlist" element={<PrivateRoute component={<CreatePlaylist />} />} />
+        <Route exact path="/explore" element={<PrivateRoute component={<Explore />} />} />
+        <Route exact path="/favorite" element={<PrivateRoute component={<Favorite />} />} />
+        <Route exact path="/playlists" element={<PrivateRoute component={<Playlists />} />} />
+      </Routes>
+    </div>
+  );
 }
 
-export default App
+export default App;
