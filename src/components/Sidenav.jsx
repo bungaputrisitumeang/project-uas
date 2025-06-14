@@ -73,215 +73,93 @@ function Sidenav({ color }) {
 
   const menuItems = [
     {
-      key: "/dashboard",
-      label: (
-        <NavLink to="/dashboard">
-          <span
-            className="icon"
-            style={{
-              backgroundColor: selectedKey === "dashboard" ? "#f0f2f5" : "",
-            }}
-          >
-            {dashboard}
-          </span>
-          <span className="label">Dashboard</span>
-        </NavLink>
-      ),
-    },
-    {
-      key: "/class-4c",
-      label: (
-        <NavLink to="/class-4c">
-          <span
-            className="icon"
-            style={{
-              backgroundColor: selectedKey === "class-4c" ? "#f0f2f5" : "",
-            }}
-          >
-            {dashboard}
-          </span>
-          <span className="label">class-4c</span>
-        </NavLink>
-      ),
-    },
-    {
-      key: "/books",
-      label: (
-        <NavLink to="/books">
-          <span
-            className="icon"
-            style={{
-              backgroundColor: selectedKey === "books" ? "#f0f2f5" : "",
-            }}
-          >
-            {dashboard}
-          </span>
-          <span className="label">Books</span>
-        </NavLink>
-      ),
-    },
-    {
-      key: "7",
-      label: "Extra",
+      key: "1",
+      label: "APP",
       className: "menu-item-header",
     },
     {
-      key: "/gallery",
+      key: "/explore",
       label: (
-        <NavLink to="/gallery">
+        <NavLink to="/explore">
           <span
             className="icon"
             style={{
-              backgroundColor: selectedKey === "gallery" ? "#f0f2f5" : "",
+              backgroundColor: selectedKey === "explore" ? "#f0f2f5" : "",
+            }}
+          >
+            {dashboard}
+          </span>
+          <span className="label">Explore</span>
+        </NavLink>
+      ),
+    },
+    {
+      key: "2",
+      label: "Personal",
+      className: "menu-item-header",
+    },
+    {
+      key: "/favorite",
+      label: (
+        <NavLink to="/favorite">
+          <span
+            className="icon"
+            style={{
+              backgroundColor: selectedKey === "favorite" ? "#f0f2f5" : "",
             }}
           >
             <FileImageOutlined />
           </span>
-          <span className="label">Galeri</span>
+          <span className="label">Favorite</span>
         </NavLink>
       ),
     },
     {
-      key: "4",
-      label: "Store",
-      className: "menu-item-header",
-    },
-    {
-      key: "/orders",
+      key: "/Albums",
       label: (
-        <NavLink to="/orders">
+        <NavLink to="/Albums">
           <span
             className="icon"
             style={{
-              backgroundColor: selectedKey === "orders" ? "#f0f2f5" : "",
+              backgroundColor: selectedKey === "Albums" ? "#f0f2f5" : "",
             }}
           >
             <ShoppingCartOutlined />
           </span>
-          <span className="label">Orders</span>
+          <span className="label">Albums</span>
         </NavLink>
       ),
     },
     {
-      key: "/categories",
+      key: "/Playlists",
       label: (
-        <NavLink to="/categories">
+        <NavLink to="/Playlists">
           <span
             className="icon"
             style={{
-              backgroundColor: selectedKey === "categories" ? "#f0f2f5" : "",
+              backgroundColor: selectedKey === "Playlists" ? "#f0f2f5" : "",
             }}
           >
             <UnorderedListOutlined />
           </span>
-          <span className="label">Categories</span>
+          <span className="label">Playlists</span>
         </NavLink>
       ),
     },
     {
-      key: "/products",
+      // TODO buat halaman Create Playlist menjadi floating button dan diam di bawah
+      key: "/create-playlist",
       label: (
-        <NavLink to="/products">
+        <NavLink to="/create-playlist">
           <span
             className="icon"
             style={{
-              backgroundColor: selectedKey === "products" ? "#f0f2f5" : "",
+              backgroundColor: selectedKey === "create-playlist" ? "#f0f2f5" : "",
             }}
           >
-            <ProductOutlined />
+            <UnorderedListOutlined />
           </span>
-          <span className="label">Products</span>
-        </NavLink>
-      ),
-    },
-    {
-      key: "5",
-      label: "Reports",
-      className: "menu-item-header",
-    },
-    {
-      key: "/report-orders",
-      label: (
-        <NavLink to="/report-orders">
-          <span
-            className="icon"
-            style={{
-              backgroundColor: selectedKey === "report-orders" ? "#f0f2f5" : "",
-            }}
-          >
-            <FundOutlined />
-          </span>
-          <span className="label">Report Orders</span>
-        </NavLink>
-      ),
-    },
-    {
-      key: "/summary",
-      label: (
-        <NavLink to="/summary">
-          <span
-            className="icon"
-            style={{
-              backgroundColor: selectedKey === "summary" ? "#f0f2f5" : "",
-            }}
-          >
-            <PieChartOutlined />
-          </span>
-          <span className="label">Summary Report</span>
-        </NavLink>
-      ),
-    },
-    {
-      key: "/product-sales-report",
-      label: (
-        <NavLink to="/product-sales-report">
-          <span
-            className="icon"
-            style={{
-              backgroundColor:
-                selectedKey === "product-sales-report" ? "#f0f2f5" : "",
-            }}
-          >
-            <DollarOutlined />
-          </span>
-          <span className="label">Product Sales Report</span>
-        </NavLink>
-      ),
-    },
-    {
-      key: "6",
-      label: "Users Management",
-      className: "menu-item-header",
-    },
-    {
-      key: "/profile",
-      label: (
-        <NavLink to="/profile">
-          <span
-            className="icon"
-            style={{
-              backgroundColor: selectedKey === "profile" ? "#f0f2f5" : "",
-            }}
-          >
-            {profile}
-          </span>
-          <span className="label">Profile</span>
-        </NavLink>
-      ),
-    },
-    {
-      key: "/membership",
-      label: (
-        <NavLink to="/membership">
-          <span
-            className="icon"
-            style={{
-              backgroundColor: selectedKey === "membership" ? "#f0f2f5" : "",
-            }}
-          >
-            <IdcardOutlined />
-          </span>
-          <span className="label">Membership</span>
+          <span className="label">Create Playlist</span>
         </NavLink>
       ),
     },
