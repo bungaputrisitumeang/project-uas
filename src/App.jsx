@@ -7,7 +7,7 @@ import "./assets/styles/adaptive.css";
 
 import LoginPage from "./pages/Login";
 import PrivateRoute from "./components/PrivateRoute";
-import Albums from "./pages/Albums";
+import Albums from "./pages/Albums/album";
 import Blank from "./pages/Blank";
 import CreatePlaylist from "./pages/CreatePlaylist";
 import Explore from "./pages/Explore";
