@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 /*!
   =========================================================
   * Muse Ant Design Dashboard - v1.0.0
@@ -10,26 +9,27 @@
   =========================================================
   * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-
-// import { useState } from "react";
-import { Menu } from "antd";
+import { Menu, Button, notification } from "antd";
 import { NavLink } from "react-router-dom";
-
 import { useState } from "react";
+import CreatePlaylistModal from "./CreatePlaylistModal";
+// import { sendData } from "../../utils/api";
+import { sendData } from "../utils/api";
+// Membersihkan import yang tidak digunakan
 import {
-  DollarOutlined,
   FileImageOutlined,
-  FundOutlined,
-  IdcardOutlined,
-  PieChartOutlined,
-  ProductOutlined,
   ShoppingCartOutlined,
   UnorderedListOutlined,
+  PlusOutlined,
 } from "@ant-design/icons";
 
 function Sidenav({ color }) {
-  const [selectedKey, setSelectedKey] = useState("1");
-
+  // State management yang lebih baik, dipertahankan dari kode baru Anda
+  const [selectedKey, setSelectedKey] = useState(window.location.pathname);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [api, contextHolder] = notification.useNotification();
+  // 2. (Opsional tapi sangat direkomendasikan) State untuk loading
+  const [isLoading, setIsLoading] = useState(false);
   const dashboard = [
     <svg
       width="20"
@@ -53,61 +53,30 @@ function Sidenav({ color }) {
     </svg>,
   ];
 
-  const profile = [
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      key={0}
-    >
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M18 10C18 14.4183 14.4183 18 10 18C5.58172 18 2 14.4183 2 10C2 5.58172 5.58172 2 10 2C14.4183 2 18 5.58172 18 10ZM12 7C12 8.10457 11.1046 9 10 9C8.89543 9 8 8.10457 8 7C8 5.89543 8.89543 5 10 5C11.1046 5 12 5.89543 12 7ZM9.99993 11C7.98239 11 6.24394 12.195 5.45374 13.9157C6.55403 15.192 8.18265 16 9.99998 16C11.8173 16 13.4459 15.1921 14.5462 13.9158C13.756 12.195 12.0175 11 9.99993 11Z"
-        fill={color}
-      ></path>
-    </svg>,
-  ];
+  const handleMenuClick = (key) => {
+    setSelectedKey(key);
+  };
 
-  const menuItems = [
-    {
-      key: "1",
-      label: "APP",
-      className: "menu-item-header",
-    },
+  // Struktur mainMenuItems ini sengaja dipertahankan persis seperti kode lama
+  const mainMenuItems = [
+    { key: "1", label: "APP", className: "menu-item-header" },
     {
       key: "/explore",
       label: (
-        <NavLink to="/explore">
-          <span
-            className="icon"
-            style={{
-              backgroundColor: selectedKey === "explore" ? "#f0f2f5" : "",
-            }}
-          >
+        <NavLink to="/explore" onClick={() => handleMenuClick("/explore")}>
+          <span className="icon" style={{ backgroundColor: selectedKey === "/explore" ? "#3674B5" : "" }}>
             {dashboard}
           </span>
           <span className="label">Explore</span>
         </NavLink>
       ),
     },
-    {
-      key: "2",
-      label: "Personal",
-      className: "menu-item-header",
-    },
+    { key: "2", label: "Personal", className: "menu-item-header" },
     {
       key: "/favorite",
       label: (
-        <NavLink to="/favorite">
-          <span
-            className="icon"
-            style={{
-              backgroundColor: selectedKey === "favorite" ? "#f0f2f5" : "",
-            }}
-          >
+        <NavLink to="/favorite" onClick={() => handleMenuClick("/favorite")}>
+          <span className="icon" style={{ backgroundColor: selectedKey === "/favorite" ? "#3674B5" : "" }}>
             <FileImageOutlined />
           </span>
           <span className="label">Favorite</span>
@@ -117,13 +86,8 @@ function Sidenav({ color }) {
     {
       key: "/Albums",
       label: (
-        <NavLink to="/Albums">
-          <span
-            className="icon"
-            style={{
-              backgroundColor: selectedKey === "Albums" ? "#f0f2f5" : "",
-            }}
-          >
+        <NavLink to="/Albums" onClick={() => handleMenuClick("/Albums")}>
+          <span className="icon" style={{ backgroundColor: selectedKey === "/Albums" ? "#3674B5" : "" }}>
             <ShoppingCartOutlined />
           </span>
           <span className="label">Albums</span>
@@ -133,54 +97,123 @@ function Sidenav({ color }) {
     {
       key: "/Playlists",
       label: (
-        <NavLink to="/Playlists">
-          <span
-            className="icon"
-            style={{
-              backgroundColor: selectedKey === "Playlists" ? "#f0f2f5" : "",
-            }}
-          >
+        <NavLink to="/Playlists" onClick={() => handleMenuClick("/Playlists")}>
+          <span className="icon" style={{ backgroundColor: selectedKey === "/Playlists" ? "#3674B5" : "" }}>
             <UnorderedListOutlined />
           </span>
           <span className="label">Playlists</span>
         </NavLink>
       ),
     },
-    {
-      // TODO buat halaman Create Playlist menjadi floating button dan diam di bawah
-      key: "/create-playlist",
-      label: (
-        <NavLink to="/create-playlist">
-          <span
-            className="icon"
-            style={{
-              backgroundColor: selectedKey === "create-playlist" ? "#f0f2f5" : "",
-            }}
-          >
-            <UnorderedListOutlined />
-          </span>
-          <span className="label">Create Playlist</span>
-        </NavLink>
-      ),
-    },
   ];
 
-  const handleMenuKey = (key) => {
-    setSelectedKey(key);
+  const handleCreatePlaylistClick = () => {
+    setIsModalOpen(true);
   };
+  // Fungsi yang dijalankan setelah playlist BERHASIL dibuat di modal
+  const handlePlaylistCreated = async (values) => {
+    console.log("Data siap dikirim:", values);
+    setIsLoading(true);
+    const formData = new FormData();
+
+    for (const key in values) {
+      formData.append(key, values[key]);
+    }
+
+    try {
+      const groupId = '53';
+      const endpoint = `/api/playlist/${ groupId }`;
+      const response = await sendData(endpoint, formData);
+
+      console.log('Server response:', response);
+
+      // Ganti alert() dengan notifikasi sukses
+      api.success({
+        message: 'Playlist Created',
+        description: 'Your new playlist has been successfully created.',
+        placement: 'topRight',
+      });
+
+      setIsModalOpen(false);
+
+    } catch (error) {
+      console.error('Gagal mengirim data playlist:', error);
+
+      // Ganti alert() dengan notifikasi error
+      api.error({
+        message: 'Creation Failed',
+        description: `Failed to create the playlist. Error: ${ error.message }`,
+        placement: 'topRight',
+      });
+
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
+
+
+  const handleModalClose = () => {
+    // Jangan tutup modal jika sedang dalam proses loading
+    if (!isLoading) {
+      setIsModalOpen(false);
+    }
+  };
+
+
+  // PERBAIKAN: Struktur tombol diperbaiki dan onClick ditambahkan
+  const createPlaylistItem = (
+    <Button
+      type="primary"
+      shape="round"
+      icon={<PlusOutlined />}
+      // Handler klik tetap sama
+      onClick={handleCreatePlaylistClick}
+      className="inline-flex items-center justify-center 
+                 shadow-lg hover:shadow-xl hover:-translate-y-1"
+      style={{
+        height: 'auto', // Biarkan tinggi menyesuaikan padding
+        padding: '6px 12px', // Atur padding secara manual
+        fontSize: '16px', // Atur ukuran font
+        backgroundColor: '#3674B5', // Warna custom Anda
+        borderColor: '#3674B5', // Samakan warna border
+      }}
+    >
+      Create Playlist
+    </Button>
+  );
+
+
 
   return (
     <>
+      {contextHolder} 
       <div className="brand">
         <span>WebfmSI.com</span>
       </div>
       <hr />
-      <Menu
-        theme="light"
-        mode="inline"
-        items={menuItems}
-        defaultSelectedKeys={[selectedKey]} // Set default selected keys
-        onSelect={handleMenuKey}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          height: "calc(100% - 77px)",
+        }}
+      >
+        <Menu
+          theme="light"
+          mode="inline"
+          items={mainMenuItems}
+        />
+        <div style={{ marginTop: "auto", padding: "24px", textAlign: "center" }}>
+          {createPlaylistItem}
+        </div>
+      </div>
+      <CreatePlaylistModal
+        open={isModalOpen}
+        onClose={handleModalClose}
+        onSuccess={handlePlaylistCreated}
+        confirmLoading={isLoading}
       />
     </>
   );
