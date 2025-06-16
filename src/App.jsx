@@ -13,7 +13,7 @@ import CreatePlaylist from "./pages/CreatePlaylist";
 import Explore from "./pages/Explore";
 import Favorite from "./pages/Favorite";
 import Playlists from "./pages/Playlists";
-// import Gallery from "./pages/Gallery";
+
 
 function App() {
   return (
