@@ -72,17 +72,6 @@ function Sidenav({ color }) {
     },
     { key: "2", label: "Personal", className: "menu-item-header" },
     {
-      key: "/favorite",
-      label: (
-        <NavLink to="/favorite" onClick={() => handleMenuClick("/favorite")}>
-          <span className="icon" style={{ backgroundColor: selectedKey === "/favorite" ? "#3674B5" : "" }}>
-            <FileImageOutlined />
-          </span>
-          <span className="label">Favorite</span>
-        </NavLink>
-      ),
-    },
-    {
       key: "/Albums",
       label: (
         <NavLink to="/Albums" onClick={() => handleMenuClick("/Albums")}>
