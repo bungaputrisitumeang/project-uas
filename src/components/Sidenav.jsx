@@ -13,8 +13,7 @@ import { Menu, Button, notification } from "antd";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import CreatePlaylistModal from "./CreatePlaylistModal";
-// import { sendData } from "../../utils/api";
-import { sendData } from "../utils/api";
+import { sendData } from "../utils/api.js";
 // Membersihkan import yang tidak digunakan
 import {
   FileImageOutlined,
@@ -122,7 +121,13 @@ function Sidenav({ color }) {
 
     try {
       const groupId = '53';
-      const endpoint = `/api/playlist/${ groupId }`;
+      const endpoint = `/api/playlist/${groupId}`;
+      
+      console.log('FormData yang akan dikirim:');
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+      }
+      
       const response = await sendData(endpoint, formData);
 
       console.log('Server response:', response);
@@ -142,7 +147,7 @@ function Sidenav({ color }) {
       // Ganti alert() dengan notifikasi error
       api.error({
         message: 'Creation Failed',
-        description: `Failed to create the playlist. Error: ${ error.message }`,
+        description: `Failed to create the playlist. Error: ${error.message}`,
         placement: 'topRight',
       });
 

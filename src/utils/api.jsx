@@ -8,12 +8,18 @@ const handleResponse = async (response) => {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
   
-  const contentType = response.headers.get('content-type');
-  if (contentType && contentType.includes('application/json')) {
-    return await response.json();
+  // Cek apakah response ada content
+  const text = await response.text();
+  if (!text) {
+    return {}; // Return empty object jika response kosong
   }
   
-  return await response.text();
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    console.warn('Response bukan JSON valid:', text);
+    return { message: text }; // Wrap text dalam object
+  }
 };
 
 // GET request

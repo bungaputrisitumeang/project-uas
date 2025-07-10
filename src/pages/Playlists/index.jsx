@@ -67,6 +67,13 @@ const Playlist = () => {
         if (resp) {
           const playlistData = Array.isArray(resp) ? resp : resp.datas || resp.data || [];
           console.log("Setting playlists:", playlistData);
+          
+          // Debug: lihat struktur data setiap playlist
+          if (playlistData.length > 0) {
+            console.log("Sample playlist structure:", playlistData[0]);
+            console.log("Available keys:", Object.keys(playlistData[0]));
+          }
+          
           setPlaylists(playlistData);
         }
         setIsLoading(false);
@@ -130,10 +137,15 @@ const Playlist = () => {
 
   const handleDelete = (id) => {
     console.log("Deleting playlist with ID:", id);
+    console.log("Delete URL:", `/api/playlist/${id}`);
+    
     deleteData(`/api/playlist/${id}`)
       .then((resp) => {
         console.log("Delete response:", resp);
+        
+        // Refresh data setelah delete berhasil
         getDataPlaylist();
+        
         openNotificationWithIcon(
           "success",
           "Data berhasil dihapus",
@@ -141,12 +153,15 @@ const Playlist = () => {
         );
       })
       .catch((err) => {
-        console.log("Delete error:", err);
+        console.error("Delete error details:", err);
+        
+        // Tetap refresh data untuk melihat status terbaru
         getDataPlaylist();
+        
         openNotificationWithIcon(
           "error",
           "Error",
-          "Terjadi kesalahan saat menghapus data"
+          `Terjadi kesalahan saat menghapus data: ${err.message}`
         );
       });
   };
